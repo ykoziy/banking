@@ -1,7 +1,6 @@
 package com.ykz.banking.model;
 
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.ykz.banking.enums.AccountStatus;
 import lombok.*;
