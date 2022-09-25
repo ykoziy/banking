@@ -43,3 +43,17 @@ INSERT INTO address (user_id, street, city, state, zip) VALUES(2, '403 Example R
 INSERT INTO address (user_id, street, city, state, zip) VALUES( 3, '8917 Turcotte Tunnel Apt. 175', 'Morrisberg', 'VT', '63234' );
 INSERT INTO address (user_id, street, city, state, zip) VALUES( 4, '1700 Zula Summit', 'Stantontown', 'NC', '27817' );
 INSERT INTO address (user_id, street, city, state, zip) VALUES( 5, '1700 Zula Summit', 'Stantontown', 'NC', '27817' );
+
+BEGIN;
+INSERT INTO account (user_id, balance, status) VALUES(1, 10000, 'active');
+INSERT INTO account(user_id, balance, status) VALUES(4, 5412300, 'active');
+INSERT INTO account (user_id, balance, status) VALUES(5, 514067, 'active');
+INSERT INTO account (user_id, balance, status) VALUES(5, 514067, 'active');
+INSERT INTO account (user_id, balance, status) VALUES(1, 10000, 'pending');
+INSERT INTO account_holder (user_id, account_id) VALUES (1, 1);
+INSERT INTO account_holder (user_id, account_id) VALUES (1, 5);
+-- Jake Peters and Lauren Peters have a joint account
+INSERT INTO account_holder (user_id, account_id) VALUES (4, 2), (5, 2);
+-- Jake also has account of his own
+INSERT INTO account_holder (user_id, account_id) VALUES (5, 3);
+END;
