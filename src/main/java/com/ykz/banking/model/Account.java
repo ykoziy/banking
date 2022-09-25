@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.math.BigInteger;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 @Data
@@ -26,4 +28,7 @@ public class Account {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private AccountStatus status;
+
+    @ManyToMany(mappedBy = "accounts", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    private Set<User> users = new HashSet<>();
 }
