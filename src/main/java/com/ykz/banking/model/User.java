@@ -1,22 +1,30 @@
 package com.ykz.banking.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.ykz.banking.enums.UserRole;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Data
+@Getter
+@Setter
+@ToString
 @Table(name = "users")
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,6 +38,10 @@ public class User {
     @NotNull
     @Email
     private String email;
+
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
+    @JsonManagedReference
+    private Address address;
 
     @NotNull
     private String pwd;
@@ -48,14 +60,11 @@ public class User {
     @NotNull
     private UserRole role;
 
-    @OneToOne(mappedBy = "user", fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL)
-    private Address address;
-
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
     @JoinTable(name = "account_holder",
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "account_id", referencedColumnName = "id")})
+    @ToString.Exclude
     private Set<Account> accounts = new HashSet<>();
 
     public User(String username, String email, String pwd, String firstName, String lastName, String phone, UserRole role, Address address, Set<Account> accounts) {
@@ -91,5 +100,18 @@ public class User {
         this.phone = phone;
         this.role = role;
         this.address = address;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        User user = (User) o;
+        return id != null && Objects.equals(id, user.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }

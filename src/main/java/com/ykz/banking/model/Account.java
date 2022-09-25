@@ -1,19 +1,27 @@
 package com.ykz.banking.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.ykz.banking.enums.AccountStatus;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
 import java.math.BigInteger;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Data
+@Getter
+@Setter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,6 +38,7 @@ public class Account {
     private AccountStatus status;
 
     @ManyToMany(mappedBy = "accounts", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    @ToString.Exclude
     private Set<User> users = new HashSet<>();
 
     public Account(Long userId, BigInteger balance, AccountStatus status) {
@@ -50,6 +59,19 @@ public class Account {
         this.balance = balance;
         this.status = status;
         this.users = users;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Account account = (Account) o;
+        return id != null && Objects.equals(id, account.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }
 
