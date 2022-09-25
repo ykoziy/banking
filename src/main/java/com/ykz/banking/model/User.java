@@ -57,4 +57,39 @@ public class User {
             joinColumns = {@JoinColumn(name = "user_id", referencedColumnName = "id")},
             inverseJoinColumns = {@JoinColumn(name = "account_id", referencedColumnName = "id")})
     private Set<Account> accounts = new HashSet<>();
+
+    public User(String username, String email, String pwd, String firstName, String lastName, String phone, UserRole role, Address address, Set<Account> accounts) {
+        this.username = username;
+        this.email = email;
+        this.pwd = pwd;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phone = phone;
+        this.role = role;
+        this.address = address;
+        this.accounts = accounts;
+    }
+
+    public User(Long id, String username, String email, String pwd, String firstName, String lastName, String phone, UserRole role, Address address) {
+        this.id = id;
+        this.username = username;
+        this.email = email;
+        this.pwd = pwd;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phone = phone;
+        this.role = role;
+        this.address = address;
+    }
+
+    public User(String username, String email, String pwd, String firstName, String lastName, String phone, UserRole role, Address address) {
+        this.username = username;
+        this.email = email;
+        this.pwd = pwd;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phone = phone;
+        this.role = role;
+        this.address = address;
+    }
 }

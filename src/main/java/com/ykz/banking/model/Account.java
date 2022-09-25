@@ -31,4 +31,25 @@ public class Account {
 
     @ManyToMany(mappedBy = "accounts", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     private Set<User> users = new HashSet<>();
+
+    public Account(Long userId, BigInteger balance, AccountStatus status) {
+        this.userId = userId;
+        this.balance = balance;
+        this.status = status;
+    }
+
+    public Account(Long id, Long userId, BigInteger balance, AccountStatus status) {
+        this.id = id;
+        this.userId = userId;
+        this.balance = balance;
+        this.status = status;
+    }
+
+    public Account(Long userId, BigInteger balance, AccountStatus status, Set<User> users) {
+        this.userId = userId;
+        this.balance = balance;
+        this.status = status;
+        this.users = users;
+    }
 }
+
