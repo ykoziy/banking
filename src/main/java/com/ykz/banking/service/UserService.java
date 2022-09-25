@@ -1,5 +1,6 @@
 package com.ykz.banking.service;
 
+import com.ykz.banking.exception.UserNotFoundException;
 import com.ykz.banking.model.User;
 import com.ykz.banking.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -13,7 +14,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public User getById(Long id) {
-        return userRepository.getReferenceById(id);
+    public User getById(Long id) throws UserNotFoundException {
+        return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User Not Found"));
     }
 }
